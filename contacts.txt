@@ -12,12 +12,12 @@ LINK:
 
 LABEL: GitHub
 VALUE: github.com/—
-LINK: 
+LINK: https://github.com/Larryzpl123/
 
 LABEL: LinkedIn
 VALUE: in/larry-zhong
-LINK: 
+LINK: https://www.linkedin.com/in/larry-zhong/
 
 LABEL: School
 VALUE: Shady Side Academy
-LINK: 
+LINK: https://www.shadysideacademy.org/
