@@ -6,12 +6,28 @@
   <title>Larry Zhong — Computational Neuroscience</title>
   <meta name="description" content="Larry Zhong — Computational neuroscience and brain-computer interfaces." />
 
+  <!-- Apply theme BEFORE paint to prevent flash of wrong theme -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        var prefLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+        var theme = saved || (prefLight ? 'light' : 'dark');
+        if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) { /* localStorage unavailable; default to dark */ }
+    })();
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,300..700&display=swap" rel="stylesheet" />
 
   <style>
+    /* ============================================================
+       THEME VARIABLES — dark default, light via [data-theme="light"]
+       ============================================================ */
     :root {
+      /* Dark / techy (default) */
       --bg: #050810;
       --bg-elev: #0B1426;
       --bg-soft: #0F1A30;
@@ -24,8 +40,56 @@
       --accent-glow: rgba(0, 176, 255, 0.4);
       --line: #1A2542;
       --line-soft: #111A2E;
-      --sans: 'IBM Plex Sans', system-ui, sans-serif;
-      --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+      --font-display: 'IBM Plex Mono', ui-monospace, monospace;
+      --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+      --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+      --bg-glow:
+        radial-gradient(ellipse 80% 50% at 15% 0%, rgba(0, 176, 255, 0.08), transparent 60%),
+        radial-gradient(ellipse 70% 50% at 85% 100%, rgba(2, 119, 189, 0.07), transparent 60%);
+      --bg-overlay: radial-gradient(circle, rgba(79, 134, 195, 0.09) 1px, transparent 1px);
+      --bg-overlay-size: 32px 32px;
+      --bg-overlay-opacity: 0.5;
+
+      --accent-shadow: 0 0 28px rgba(0, 176, 255, 0.35);
+      --accent-text-glow: 0 0 16px rgba(0, 176, 255, 0.2);
+      --waveform-glow: drop-shadow(0 0 6px var(--accent-glow));
+      --row-hover-bg: linear-gradient(90deg, rgba(0, 176, 255, 0.05), transparent);
+      --toggle-hover-bg: rgba(0, 176, 255, 0.08);
+    }
+
+    :root[data-theme="light"] {
+      /* Light / Claude */
+      --bg: #F4EFE5;
+      --bg-elev: #ECE4D2;
+      --bg-soft: #ECE4D2;
+      --ink: #1A1815;
+      --ink-soft: #3D3A35;
+      --muted: #8A8275;
+      --accent: #6B2828;
+      --accent-bright: #8A3434;
+      --accent-deep: #4F1F1F;
+      --accent-glow: rgba(107, 40, 40, 0.25);
+      --line: #C9BFA8;
+      --line-soft: #DDD3BD;
+
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'Source Serif 4', Georgia, serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+      --bg-glow:
+        radial-gradient(circle at 15% 0%, rgba(107, 40, 40, 0.04), transparent 45%),
+        radial-gradient(circle at 85% 100%, rgba(107, 40, 40, 0.03), transparent 50%);
+      --bg-overlay: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+      --bg-overlay-size: auto;
+      --bg-overlay-opacity: 0.35;
+
+      --accent-shadow: none;
+      --accent-text-glow: none;
+      --waveform-glow: none;
+      --row-hover-bg: linear-gradient(90deg, rgba(107, 40, 40, 0.04), transparent);
+      --toggle-hover-bg: rgba(107, 40, 40, 0.05);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -34,27 +98,25 @@
     body {
       background: var(--bg);
       color: var(--ink);
-      font-family: var(--sans);
+      font-family: var(--font-body);
       font-size: 16px;
       line-height: 1.65;
       font-weight: 400;
       -webkit-font-smoothing: antialiased;
-      background-image:
-        radial-gradient(ellipse 80% 50% at 15% 0%, rgba(0, 176, 255, 0.08), transparent 60%),
-        radial-gradient(ellipse 70% 50% at 85% 100%, rgba(2, 119, 189, 0.07), transparent 60%);
+      background-image: var(--bg-glow);
       min-height: 100vh;
+      transition: background-color 0.35s ease, color 0.35s ease;
     }
 
-    /* Subtle dot grid — instrument-panel feel */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
       pointer-events: none;
-      opacity: 0.5;
+      opacity: var(--bg-overlay-opacity);
       z-index: 1;
-      background-image: radial-gradient(circle, rgba(79, 134, 195, 0.09) 1px, transparent 1px);
-      background-size: 32px 32px;
+      background-image: var(--bg-overlay);
+      background-size: var(--bg-overlay-size);
     }
 
     .container {
@@ -72,19 +134,22 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid var(--line);
+      transition: border-color 0.35s ease;
     }
 
     .brand {
-      font-family: var(--mono);
+      font-family: var(--font-mono);
       font-size: 12px;
       letter-spacing: 0.08em;
       color: var(--accent);
       text-transform: uppercase;
       display: flex;
       align-items: center;
+      transition: color 0.35s ease;
     }
+    :root[data-theme="light"] .brand { color: var(--ink); }
 
-    /* Pulsing live-indicator dot */
+    /* Pulsing live-indicator dot — dark theme only */
     .brand::before {
       content: '';
       display: inline-block;
@@ -96,20 +161,28 @@
       box-shadow: 0 0 10px var(--accent), 0 0 4px var(--accent);
       animation: pulse 2.4s ease-in-out infinite;
     }
+    :root[data-theme="light"] .brand::before { display: none; }
 
     @keyframes pulse {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.35; }
     }
 
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
     .nav-links {
       display: flex;
       gap: 28px;
-      font-family: var(--mono);
+      font-family: var(--font-mono);
       font-size: 12px;
       letter-spacing: 0.06em;
       text-transform: uppercase;
     }
+    :root[data-theme="light"] .nav-links { text-transform: none; letter-spacing: 0.04em; }
 
     .nav-links a {
       color: var(--ink-soft);
@@ -117,22 +190,54 @@
       transition: color 0.2s ease, text-shadow 0.2s ease;
       position: relative;
     }
-
     .nav-links a:hover {
       color: var(--accent);
-      text-shadow: 0 0 12px var(--accent-glow);
+      text-shadow: var(--accent-text-glow);
     }
-
     .nav-links a::after {
       content: '';
       position: absolute;
       left: 0; bottom: -4px;
       width: 0; height: 1px;
       background: var(--accent);
-      box-shadow: 0 0 6px var(--accent);
       transition: width 0.25s ease;
     }
+    :root:not([data-theme="light"]) .nav-links a::after {
+      box-shadow: 0 0 6px var(--accent);
+    }
     .nav-links a:hover::after { width: 100%; }
+
+    /* ===================== THEME TOGGLE ===================== */
+    .theme-toggle {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--ink-soft);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.2s;
+      padding: 0;
+      border-radius: 0;
+    }
+    .theme-toggle:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--toggle-hover-bg);
+    }
+    .theme-toggle:active { transform: scale(0.94); }
+    .theme-toggle svg {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+    /* Dark mode shows sun (click → go light); light mode shows moon */
+    .icon-sun { display: block; }
+    .icon-moon { display: none; }
+    [data-theme="light"] .icon-sun { display: none; }
+    [data-theme="light"] .icon-moon { display: block; }
 
     /* ===================== HERO ===================== */
     .hero {
@@ -144,7 +249,7 @@
     }
 
     .eyebrow {
-      font-family: var(--mono);
+      font-family: var(--font-mono);
       font-size: 11px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -154,15 +259,18 @@
       align-items: center;
       gap: 10px;
     }
-
     .eyebrow::before {
       content: '//';
       color: var(--muted);
       font-weight: 500;
     }
+    :root[data-theme="light"] .eyebrow {
+      letter-spacing: 0.16em;
+    }
+    :root[data-theme="light"] .eyebrow::before { display: none; }
 
     .hero h1 {
-      font-family: var(--mono);
+      font-family: var(--font-display);
       font-size: clamp(56px, 8.5vw, 112px);
       line-height: 0.95;
       font-weight: 600;
@@ -170,12 +278,23 @@
       margin-bottom: 32px;
       color: var(--ink);
     }
+    :root[data-theme="light"] .hero h1 {
+      font-weight: 400;
+      line-height: 0.92;
+      letter-spacing: -0.035em;
+      font-size: clamp(60px, 9vw, 124px);
+      font-variation-settings: "opsz" 144;
+    }
 
     .hero h1 em {
       font-style: italic;
       font-weight: 500;
       color: var(--accent);
-      text-shadow: 0 0 28px rgba(0, 176, 255, 0.35);
+      text-shadow: var(--accent-shadow);
+    }
+    :root[data-theme="light"] .hero h1 em {
+      font-weight: 350;
+      color: var(--ink);
     }
 
     .tagline {
@@ -185,12 +304,12 @@
       line-height: 1.55;
       font-weight: 400;
     }
+    :root[data-theme="light"] .tagline { font-size: 19px; }
 
     .tagline strong {
       color: var(--ink);
       font-weight: 600;
     }
-
     .tagline em {
       color: var(--accent);
       font-style: italic;
@@ -205,14 +324,21 @@
       position: relative;
       overflow: hidden;
       box-shadow: 0 0 40px rgba(0, 176, 255, 0.06);
-      transition: box-shadow 0.4s ease, border-color 0.4s ease;
+      transition: box-shadow 0.4s ease, border-color 0.4s ease, background-color 0.35s ease;
     }
-
+    :root[data-theme="light"] .photo-frame {
+      box-shadow: none;
+    }
     .photo-frame:hover {
       border-color: var(--accent-deep);
       box-shadow: 0 0 60px rgba(0, 176, 255, 0.18);
     }
+    :root[data-theme="light"] .photo-frame:hover {
+      box-shadow: none;
+      border-color: var(--accent);
+    }
 
+    /* Dashed inner border — light theme only */
     .photo-frame::before {
       content: '';
       position: absolute;
@@ -220,9 +346,11 @@
       border: 1px dashed var(--muted);
       pointer-events: none;
       z-index: 2;
+      display: none;
     }
+    :root[data-theme="light"] .photo-frame::before { display: block; }
 
-    /* Corner brackets */
+    /* Corner brackets — dark theme only */
     .photo-frame::after {
       content: '';
       position: absolute;
@@ -240,6 +368,7 @@
         linear-gradient(to top, var(--accent) 14px, transparent 14px) bottom right / 1px 14px no-repeat;
       opacity: 0.7;
     }
+    :root[data-theme="light"] .photo-frame::after { display: none; }
 
     .photo-frame img {
       position: absolute;
@@ -259,7 +388,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-family: var(--mono);
+      font-family: var(--font-mono);
       color: var(--muted);
       letter-spacing: 0.08em;
       text-align: center;
@@ -278,6 +407,7 @@
       opacity: 0.7;
       color: var(--accent);
     }
+    :root[data-theme="light"] .photo-placeholder .dim { color: var(--muted); }
     .photo-placeholder .hint {
       margin-top: 18px;
       font-size: 9px;
@@ -289,6 +419,7 @@
     section {
       padding: 80px 0;
       border-top: 1px solid var(--line);
+      transition: border-color 0.35s ease;
     }
 
     .section-header {
@@ -300,21 +431,30 @@
     }
 
     .section-num {
-      font-family: var(--mono);
+      font-family: var(--font-mono);
       font-size: 11px;
       color: var(--accent);
       letter-spacing: 0.16em;
       padding-top: 10px;
       text-transform: uppercase;
     }
+    :root[data-theme="light"] .section-num {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      padding-top: 6px;
+    }
 
     .section-title {
-      font-family: var(--mono);
+      font-family: var(--font-display);
       font-size: clamp(28px, 3.5vw, 38px);
       font-weight: 500;
       letter-spacing: -0.02em;
       line-height: 1.1;
       color: var(--ink);
+    }
+    :root[data-theme="light"] .section-title {
+      font-weight: 400;
+      font-variation-settings: "opsz" 60;
     }
 
     .content {
@@ -332,14 +472,17 @@
       margin-bottom: 18px;
       font-size: 16.5px;
       color: var(--ink-soft);
-      font-family: var(--sans);
+      font-family: var(--font-body);
+    }
+    :root[data-theme="light"] .content-body p {
+      font-size: 17.5px;
     }
     .content-body p:last-child { margin-bottom: 0; }
     .content-body strong { color: var(--ink); font-weight: 600; }
     .content-body em {
       color: var(--accent);
       font-style: italic;
-      text-shadow: 0 0 16px rgba(0, 176, 255, 0.2);
+      text-shadow: var(--accent-text-glow);
     }
 
     .content-body a {
@@ -348,9 +491,12 @@
       border-bottom: 1px solid rgba(0, 176, 255, 0.3);
       transition: border-color 0.2s, text-shadow 0.2s;
     }
+    :root[data-theme="light"] .content-body a {
+      border-bottom-color: var(--line);
+    }
     .content-body a:hover {
       border-bottom-color: var(--accent);
-      text-shadow: 0 0 10px var(--accent-glow);
+      text-shadow: var(--accent-text-glow);
     }
 
     /* ===================== PROJECTS ===================== */
@@ -372,22 +518,30 @@
     .project:nth-child(even) { padding-left: 32px; }
 
     .project-tag {
-      font-family: var(--mono);
+      font-family: var(--font-mono);
       font-size: 10px;
       color: var(--accent);
       letter-spacing: 0.16em;
       text-transform: uppercase;
       margin-bottom: 14px;
     }
+    :root[data-theme="light"] .project-tag {
+      letter-spacing: 0.14em;
+    }
 
     .project h3 {
-      font-family: var(--mono);
+      font-family: var(--font-display);
       font-size: 20px;
       font-weight: 500;
       margin-bottom: 10px;
       letter-spacing: -0.01em;
       line-height: 1.3;
       color: var(--ink);
+    }
+    :root[data-theme="light"] .project h3 {
+      font-size: 22px;
+      line-height: 1.2;
+      font-variation-settings: "opsz" 60;
     }
 
     .project h3 a {
@@ -397,14 +551,18 @@
     }
     .project h3 a:hover {
       color: var(--accent);
-      text-shadow: 0 0 16px var(--accent-glow);
+      text-shadow: var(--accent-text-glow);
     }
 
     .project p {
       font-size: 14.5px;
       color: var(--ink-soft);
       line-height: 1.6;
-      font-family: var(--sans);
+      font-family: var(--font-body);
+    }
+    :root[data-theme="light"] .project p {
+      font-size: 15px;
+      line-height: 1.55;
     }
 
     /* ===================== AWARDS ===================== */
@@ -424,22 +582,30 @@
     }
     .awards li:first-child { border-top: 1px solid var(--line-soft); }
     .awards li:hover {
-      background: linear-gradient(90deg, rgba(0, 176, 255, 0.05), transparent);
+      background: var(--row-hover-bg);
       padding-left: 12px;
     }
 
     .award-year {
-      font-family: var(--mono);
+      font-family: var(--font-mono);
       font-size: 11px;
       color: var(--muted);
       letter-spacing: 0.06em;
     }
+    :root[data-theme="light"] .award-year {
+      font-size: 12px;
+      letter-spacing: 0.04em;
+    }
 
     .award-name {
-      font-family: var(--sans);
+      font-family: var(--font-body);
       font-size: 16px;
       color: var(--ink);
       font-weight: 500;
+    }
+    :root[data-theme="light"] .award-name {
+      font-size: 16.5px;
+      font-weight: 400;
     }
 
     .award-name a {
@@ -451,11 +617,11 @@
     .award-name a:hover {
       color: var(--accent);
       border-bottom-color: var(--accent);
-      text-shadow: 0 0 10px var(--accent-glow);
+      text-shadow: var(--accent-text-glow);
     }
 
     .award-detail {
-      font-family: var(--mono);
+      font-family: var(--font-mono);
       font-size: 11px;
       color: var(--muted);
       text-align: right;
@@ -470,18 +636,24 @@
       border-top: 1px solid var(--line-soft);
     }
     .waveform-label {
-      font-family: var(--mono);
+      font-family: var(--font-mono);
       font-size: 10px;
       color: var(--accent);
       letter-spacing: 0.16em;
       text-transform: uppercase;
       margin-bottom: 14px;
     }
+    :root[data-theme="light"] .waveform-label {
+      color: var(--muted);
+      letter-spacing: 0.14em;
+    }
     .waveform-label::before {
       content: '◉ ';
       color: var(--accent);
       animation: pulse 2.4s ease-in-out infinite;
     }
+    :root[data-theme="light"] .waveform-label::before { display: none; }
+
     .waveform {
       width: 100%;
       height: 60px;
@@ -490,8 +662,9 @@
     }
     .waveform path {
       stroke: currentColor;
-      filter: drop-shadow(0 0 6px var(--accent-glow));
+      filter: var(--waveform-glow);
     }
+    :root[data-theme="light"] .waveform path { opacity: 0.7; }
 
     /* ===================== CONTACT ===================== */
     .contact-grid {
@@ -505,7 +678,7 @@
       padding: 24px;
       background: var(--bg-elev);
       border: 1px solid var(--line);
-      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.35s ease;
       position: relative;
     }
     .contact-item:hover {
@@ -513,23 +686,35 @@
       transform: translateY(-2px);
       box-shadow: 0 8px 32px rgba(0, 176, 255, 0.12), 0 0 0 1px var(--accent-deep);
     }
+    :root[data-theme="light"] .contact-item:hover {
+      border-color: var(--accent);
+      box-shadow: none;
+    }
 
     .contact-label {
-      font-family: var(--mono);
+      font-family: var(--font-mono);
       font-size: 10px;
       color: var(--accent);
       letter-spacing: 0.16em;
       text-transform: uppercase;
       margin-bottom: 10px;
     }
+    :root[data-theme="light"] .contact-label {
+      color: var(--muted);
+      letter-spacing: 0.14em;
+    }
 
     .contact-value {
-      font-family: var(--mono);
+      font-family: var(--font-mono);
       font-size: 14px;
       color: var(--ink);
       word-break: break-word;
       line-height: 1.4;
       font-weight: 400;
+    }
+    :root[data-theme="light"] .contact-value {
+      font-family: var(--font-body);
+      font-size: 15px;
     }
 
     .contact-value a {
@@ -541,14 +726,14 @@
     .contact-value a:hover {
       border-color: var(--accent);
       color: var(--accent);
-      text-shadow: 0 0 10px var(--accent-glow);
+      text-shadow: var(--accent-text-glow);
     }
 
     /* ===================== FOOTER ===================== */
     footer {
       padding: 40px 0 56px;
       border-top: 1px solid var(--line);
-      font-family: var(--mono);
+      font-family: var(--font-mono);
       font-size: 11px;
       color: var(--muted);
       letter-spacing: 0.08em;
@@ -556,6 +741,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      transition: border-color 0.35s ease;
+    }
+    :root[data-theme="light"] footer {
+      letter-spacing: 0.06em;
+      text-transform: none;
     }
 
     /* ===================== FADE-IN ===================== */
@@ -576,6 +766,7 @@
       .container { padding: 0 24px; }
       nav { padding: 22px 0; }
       .nav-links { gap: 18px; font-size: 11px; }
+      .nav-right { gap: 14px; }
 
       .hero {
         grid-template-columns: 1fr;
@@ -583,7 +774,9 @@
         padding: 56px 0 48px;
       }
       .hero h1 { font-size: clamp(54px, 13vw, 84px); }
+      :root[data-theme="light"] .hero h1 { font-size: clamp(56px, 14vw, 88px); }
       .tagline { font-size: 16px; }
+      :root[data-theme="light"] .tagline { font-size: 17px; }
 
       .photo-frame { width: 100%; max-width: 320px; }
 
@@ -629,11 +822,29 @@
 
     <nav>
       <div class="brand">L.Z. — '27</div>
-      <div class="nav-links">
-        <a href="#about">About</a>
-        <a href="#currently">Now</a>
-        <a href="#projects">Work</a>
-        <a href="#contact">Contact</a>
+      <div class="nav-right">
+        <div class="nav-links">
+          <a href="#about">About</a>
+          <a href="#currently">Now</a>
+          <a href="#projects">Work</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <button class="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2"/>
+            <path d="M12 20v2"/>
+            <path d="M4.93 4.93l1.41 1.41"/>
+            <path d="M17.66 17.66l1.41 1.41"/>
+            <path d="M2 12h2"/>
+            <path d="M20 12h2"/>
+            <path d="M6.34 17.66l-1.41 1.41"/>
+            <path d="M19.07 4.93l-1.41 1.41"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
       </div>
     </nav>
 
@@ -646,7 +857,7 @@
 
       <!-- Save your photo as portrait.jpg in this folder, then change src="" → src="portrait.jpg" -->
       <div class="photo-frame" aria-label="Portrait">
-        <img src="portrait.jpg" alt="Larry Zhong" />
+        <img src="" alt="Larry Zhong" />
         <div class="photo-placeholder" aria-hidden="true">
           <div class="label">Portrait</div>
           <div class="dim">1080 × 1080</div>
@@ -737,12 +948,46 @@
   </div>
 
   <script>
-    // ------------------------------------------------------------------
-    //  Content loader — pulls each section from a .txt file.
-    //  Missing file → that section auto-hides.
-    //  Light markdown in prose: **bold**, *italic*, [text](url)
-    // ------------------------------------------------------------------
+    // ============================================================
+    //  THEME TOGGLE
+    // ============================================================
+    (function () {
+      const root = document.documentElement;
+      const btn = document.querySelector('.theme-toggle');
+      if (!btn) return;
 
+      function setTheme(theme) {
+        if (theme === 'light') root.setAttribute('data-theme', 'light');
+        else root.removeAttribute('data-theme');
+        try { localStorage.setItem('theme', theme); } catch (e) {}
+      }
+
+      btn.addEventListener('click', function () {
+        const isLight = root.getAttribute('data-theme') === 'light';
+        setTheme(isLight ? 'dark' : 'light');
+      });
+
+      // Sync with system preference if user hasn't picked manually
+      if (window.matchMedia) {
+        const mq = window.matchMedia('(prefers-color-scheme: light)');
+        const handler = function (e) {
+          let saved = null;
+          try { saved = localStorage.getItem('theme'); } catch (err) {}
+          if (saved) return; // user has chosen — don't override
+          setTheme(e.matches ? 'light' : 'dark');
+          // setTheme writes to localStorage; clear so we keep auto-detecting
+          try { localStorage.removeItem('theme'); } catch (err) {}
+        };
+        if (mq.addEventListener) mq.addEventListener('change', handler);
+        else if (mq.addListener) mq.addListener(handler);
+      }
+    })();
+
+    // ============================================================
+    //  CONTENT LOADER
+    //  Pulls each section from a .txt file. Missing file → section hides.
+    //  Light markdown in prose: **bold**, *italic*, [text](url)
+    // ============================================================
     const escapeHtml = (s) =>
       String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
