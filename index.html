@@ -11,9 +11,7 @@
     (function () {
       try {
         var saved = localStorage.getItem('theme');
-        var prefLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-        var theme = saved || (prefLight ? 'light' : 'dark');
-        if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+        if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
       } catch (e) { /* localStorage unavailable; default to dark */ }
     })();
   </script>
@@ -855,9 +853,9 @@
         <p class="tagline" data-content="intro"></p>
       </div>
 
-      <!-- Save your photo as portrait.jpg in this folder, then change src="" → src="portrait.jpg" -->
+      <!-- Photo loads from portrait.jpg in this folder -->
       <div class="photo-frame" aria-label="Portrait">
-        <img src="" alt="Larry Zhong" />
+        <img src="portrait.jpg" alt="Larry Zhong" />
         <div class="photo-placeholder" aria-hidden="true">
           <div class="label">Portrait</div>
           <div class="dim">1080 × 1080</div>
@@ -966,21 +964,6 @@
         const isLight = root.getAttribute('data-theme') === 'light';
         setTheme(isLight ? 'dark' : 'light');
       });
-
-      // Sync with system preference if user hasn't picked manually
-      if (window.matchMedia) {
-        const mq = window.matchMedia('(prefers-color-scheme: light)');
-        const handler = function (e) {
-          let saved = null;
-          try { saved = localStorage.getItem('theme'); } catch (err) {}
-          if (saved) return; // user has chosen — don't override
-          setTheme(e.matches ? 'light' : 'dark');
-          // setTheme writes to localStorage; clear so we keep auto-detecting
-          try { localStorage.removeItem('theme'); } catch (err) {}
-        };
-        if (mq.addEventListener) mq.addEventListener('change', handler);
-        else if (mq.addListener) mq.addListener(handler);
-      }
     })();
 
     // ============================================================
