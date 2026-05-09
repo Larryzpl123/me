@@ -1,0 +1,24 @@
+TAG: Modding · ongoing
+TITLE: Game Modding
+LINK: 
+DESCRIPTION: Strategy game mods exploring custom factions, gameplay mechanics, and balance design. XML and SQL data modeling, dynamic systems, and full localization.
+
+TAG: Hardware · 2024-25
+TITLE: LZ Explorer
+LINK: 
+DESCRIPTION: A control system for an Arduino Uno quadcopter with four small motors. Working build for tuning and flight testing.
+
+TAG: Study · 2024-25
+TITLE: Music & Concentration
+LINK: 
+DESCRIPTION: EEG-based investigation of how musical genre affects concentration during logical and computational tasks. TGAM headset, Python analysis pipeline.
+
+TAG: Web · 2025
+TITLE: SSA Forum
+LINK: 
+DESCRIPTION: A student-run discussion forum for Shady Side Academy. In progress.
+
+TAG: Film · 2024
+TITLE: The Echoes of Earth
+LINK: 
+DESCRIPTION: A short AI-assisted film exploring resource depletion and migration, made for the HKU Summer Institute. 3D modeling and AI imagery.

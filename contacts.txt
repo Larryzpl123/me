@@ -1,0 +1,23 @@
+LABEL: Email
+VALUE: larryzpl123@outlook.com
+LINK: mailto:larryzpl123@outlook.com
+
+LABEL: Phone
+VALUE: (771) 217-1066
+LINK: 
+
+LABEL: Location
+VALUE: Pittsburgh, PA
+LINK: 
+
+LABEL: GitHub
+VALUE: github.com/—
+LINK: 
+
+LABEL: LinkedIn
+VALUE: in/larry-zhong
+LINK: 
+
+LABEL: School
+VALUE: Shady Side Academy
+LINK: 

@@ -1,0 +1,24 @@
+YEAR: 2025-26
+NAME: Math League National Qualifier
+DETAIL: 
+LINK: 
+
+YEAR: 2025
+NAME: Stanford Math Tournament
+DETAIL: 
+LINK: 
+
+YEAR: 2025
+NAME: Berkeley Math Tournament
+DETAIL: 
+LINK: 
+
+YEAR: 2024-26
+NAME: Co-President · Neuroscience, Computing, Go Clubs
+DETAIL: Shady Side Academy
+LINK: 
+
+YEAR: 2023-24
+NAME: Duke of Edinburgh Award
+DETAIL: Bronze
+LINK: 
