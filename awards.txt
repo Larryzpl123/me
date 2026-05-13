@@ -19,6 +19,6 @@ DETAIL: Shady Side Academy
 LINK: 
 
 YEAR: 2023-24
-NAME: Duke of Edinburgh Award
+NAME: The Duke of Edinburgh's International Award
 DETAIL: Bronze
 LINK: 
