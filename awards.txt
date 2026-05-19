@@ -1,4 +1,4 @@
-YEAR: 2025-26
+YEAR: 2024-26
 NAME: Math League National Qualifier
 DETAIL: 
 LINK: 
